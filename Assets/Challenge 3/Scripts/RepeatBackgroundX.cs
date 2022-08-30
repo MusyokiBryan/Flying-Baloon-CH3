@@ -4,25 +4,22 @@ using UnityEngine;
 
 public class RepeatBackgroundX : MonoBehaviour
 {
-    private Vector3 startPos;
+    private Vector3 startPosition;
     private float repeatWidth;
-
+    // Start is called before the first frame update
     private void Start()
     {
-        startPos = transform.position; // Establish the default starting position 
-        repeatWidth = GetComponent<BoxCollider>().size.y / 2; // Set repeat width to half of the background
+        startPosition = transform.position;
+        repeatWidth = GetComponent<BoxCollider>().size.x / 2;
     }
-
+    // Update is called once per frame
     private void Update()
     {
-        // If background moves left by its repeat width, move it back to start position
-        if (transform.position.x < startPos.x - repeatWidth)
+        if(transform.position.x < startPosition.x - repeatWidth)
         {
-            transform.position = startPos;
+            transform.position = startPosition;
         }
     }
-
- 
 }
 
 
