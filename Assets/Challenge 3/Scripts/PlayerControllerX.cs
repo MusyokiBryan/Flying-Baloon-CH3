@@ -6,6 +6,7 @@ public class PlayerControllerX : MonoBehaviour
 {
     public bool gameOver = false;
     public float floatForce;
+    public float upwardForce = 10;
     private float gravityModifier = 1.5f;
     private Rigidbody playerRb;
     public ParticleSystem explosionParticle;
@@ -13,6 +14,8 @@ public class PlayerControllerX : MonoBehaviour
     private AudioSource playerAudio;
     public AudioClip moneySound;
     public AudioClip explodeSound;
+    public bool howHigh;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -28,9 +31,15 @@ public class PlayerControllerX : MonoBehaviour
     void Update()
     {
         // While space is pressed and player is low enough, float up
-        if (Input.GetKey(KeyCode.Space) && !gameOver)
+        if (Input.GetKey(KeyCode.Space) && howHigh && !gameOver)
         {
             playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
+        }
+        if (transform.position.y > 11)
+        {
+            howHigh = false;
+        }else{
+            howHigh = true;
         }
     }
     private void OnCollisionEnter(Collision other)
@@ -50,6 +59,11 @@ public class PlayerControllerX : MonoBehaviour
             fireworksParticle.Play();
             playerAudio.PlayOneShot(moneySound, 1.0f);
             Destroy(other.gameObject);
+        }
+        //prevent balloon from falling to the ground
+        else if(other.gameObject.CompareTag("Ground") && !gameOver)
+        {
+            playerRb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
         }
     }
 }
